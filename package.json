@@ -9,7 +9,10 @@
   },
   "dependencies": {
     "core-js": "^2.6.5",
-    "vue": "^2.6.10"
+    "mapbox-gl": "^1.1.0",
+    "turf": "^3.0.14",
+    "vue": "^2.6.10",
+    "vue-function-api": "^2.0.6"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^3.9.0",
