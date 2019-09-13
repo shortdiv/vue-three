@@ -1,18 +1,22 @@
 <template>
   <div>
-    <BaseMap v-if="dataLoaded" :data="point" :dataTwo="pointTwo">
+    <BaseMap
+      v-if="state.dataLoaded"
+      :data="state.point"
+      :dataTwo="state.pointTwo"
+    >
       <template v-slot:default="slotProps">
         <PointLayer
-          v-if="slotProps.mapContext !== null && point !== null"
+          v-if="slotProps.mapContext !== null && state.point !== null"
           :map="slotProps.mapContext"
-          :data="point"
+          :data="state.point"
           :time="time"
           sourceId="point"
         />
         <PointLayer
-          v-if="slotProps.mapContext !== null && pointTwo !== null"
+          v-if="slotProps.mapContext !== null && state.pointTwo !== null"
           :map="slotProps.mapContext"
-          :data="pointTwo"
+          :data="state.pointTwo"
           :time="time2"
           sourceId="pointTwo"
         />
@@ -22,7 +26,7 @@
 </template>
 
 <script>
-import { value, onCreated } from "vue-function-api";
+import { reactive, onMounted } from "@vue/composition-api";
 const mapboxgl = require("mapbox-gl");
 import PointLayer from "../components/PointLayer.vue";
 
@@ -35,16 +39,19 @@ export default {
     PointLayer
   },
   setup() {
-    const point = value(null);
-    const pointTwo = value(null);
-    const dataLoaded = value(false);
+    const state = reactive({
+      point: null,
+      pointTwo: null,
+      dataLoaded: false
+    });
     const getMarathonRoute = () =>
       fetch(
         "https://gist.githubusercontent.com/shortdiv/cc38c54c49e153493835827e9fb05c6d/raw/a561954794bf303a9275a6c03f6f930f105767ba/boston_marathon.geojson"
       )
         .then(response => response.json())
         .then(data => {
-          pointTwo.value = data;
+          state.pointTwo = data;
+          return data;
         });
     const get5ksegment = () =>
       fetch(
@@ -54,19 +61,18 @@ export default {
           return response.json();
         })
         .then(data => {
-          point.value = data;
+          state.point = data;
+          return data;
         });
-    onCreated(() => {
+    onMounted(() => {
       mapboxgl.accessToken =
         "pk.eyJ1IjoiYWxscnlkZXIiLCJhIjoidWs5cUFfRSJ9.t8kxvO3nIhCaAl07-4lkNw";
       Promise.all([get5ksegment(), getMarathonRoute()]).then(() => {
-        dataLoaded.value = true;
+        state.dataLoaded = true;
       });
     });
     return {
-      point,
-      pointTwo,
-      dataLoaded,
+      state,
       time: 6,
       time2: 100
     };

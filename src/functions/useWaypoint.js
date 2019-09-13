@@ -1,8 +1,9 @@
-import { value, state } from "vue-function-api";
+import { reactive, ref } from "@vue/composition-api";
+
 var turf = require("turf");
 
 export default function useWaypoint(route, timeperiod) {
-  const waypointVal = value({
+  const waypointVal = ref({
     type: "Feature",
     geometry: {
       type: "Point",
@@ -15,7 +16,7 @@ export default function useWaypoint(route, timeperiod) {
   );
   var distance = turf.distance(from, to) * 1000;
   const movePoint = () => {
-    const waypointState = state({
+    const waypointState = reactive({
       timestamp: performance.now(),
       raf: null
     });

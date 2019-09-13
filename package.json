@@ -8,6 +8,7 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
+    "@vue/composition-api": "^0.3.1",
     "core-js": "^2.6.5",
     "mapbox-gl": "^1.1.0",
     "turf": "^3.0.14",

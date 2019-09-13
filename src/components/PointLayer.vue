@@ -1,6 +1,7 @@
 <script>
 import useWaypoint from "../functions/useWaypoint.js";
-import { watch } from "vue-function-api";
+import { watch } from "@vue/composition-api";
+
 export default {
   name: "PointLayer",
   props: {
