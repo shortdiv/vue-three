@@ -24,6 +24,9 @@ export default function useWaypoint(route, timeperiod) {
       let time = performance.now(); //ms
       const duration = timeperiod * 1000; // 6000ms or 6s
       let speed = distance / duration; //in m
+      console.log("speed", speed);
+      console.log("duration", duration);
+      console.log(distance);
       const path = turf.lineString(route.geometry.coordinates);
       const timeElapsed = time - waypointState.timestamp;
       if (timeElapsed * speed >= distance) {
